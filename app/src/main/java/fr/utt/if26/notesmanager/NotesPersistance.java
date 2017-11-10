@@ -23,6 +23,7 @@ public class NotesPersistance extends SQLiteOpenHelper {
 
     public NotesPersistance(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        SQLiteDatabase db = getWritableDatabase();
     }
 
     @Override
@@ -30,11 +31,12 @@ public class NotesPersistance extends SQLiteOpenHelper {
         final String table_items_create =
             "CREATE TABLE " + TABLE_ITEMS + "(" +
                     ATTRIBUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    ATTRIBUT_NAME + " TEXT" +
+                    ATTRIBUT_NAME + " TEXT, " +
                     ATTRIBUT_PARENTID + " INTEGER, " +
                     ATTRIBUT_TYPE + " TEXT, " +
                     ATTRIBUT_CONTENT + " TEXT" +
                 ")";
+        db.execSQL(table_items_create);
     }
 
     @Override
@@ -47,11 +49,12 @@ public class NotesPersistance extends SQLiteOpenHelper {
      * Ajoute un dossier dans la base de données
      * @param parentId Id du dossier parent (0 si le nouveau dossier est à la racine)
      */
-    public void addFolder(int parentId){
+    public void addFolder(int parentId, String name){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues newFolder = new ContentValues();
 
         newFolder.put(ATTRIBUT_PARENTID, parentId);
+        newFolder.put(ATTRIBUT_NAME, name);
         newFolder.put(ATTRIBUT_TYPE, "Folder");
 
         db.insert(TABLE_ITEMS, null, newFolder);
@@ -62,11 +65,12 @@ public class NotesPersistance extends SQLiteOpenHelper {
      * @param parentId Id du dossier parent (0 si le nouveau dossier est à la racine)
      * @param content contenu de la note
      */
-    public void addNote(int parentId, String content){
+    public void addNote(int parentId, String name, String content){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues newNote = new ContentValues();
 
         newNote.put(ATTRIBUT_PARENTID, parentId);
+        newNote.put(ATTRIBUT_NAME, name);
         newNote.put(ATTRIBUT_TYPE, "Note");
         newNote.put(ATTRIBUT_CONTENT, content);
 
@@ -80,7 +84,7 @@ public class NotesPersistance extends SQLiteOpenHelper {
     public ArrayList<Item> getAllItems(){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Item> allItems = new ArrayList<>();
-        final String query = "SELECT * FROM " + TABLE_ITEMS;
+        String query = "SELECT * FROM " + TABLE_ITEMS;
 
         Cursor results = db.rawQuery(query, null);
 
@@ -90,23 +94,26 @@ public class NotesPersistance extends SQLiteOpenHelper {
         ItemType itemType;
         String itemContent;
 
-        while (! results.isAfterLast()){
-            itemId = results.getInt(results.getColumnIndex(ATTRIBUT_ID));
-            itemName = results.getString(results.getColumnIndex(ATTRIBUT_NAME));
-            itemParentId = results.getInt(results.getColumnIndex(ATTRIBUT_PARENTID));
-            itemType = ItemType.valueOf(results.getString(results.getColumnIndex(ATTRIBUT_TYPE)));
-            itemContent = results.getString(results.getColumnIndex(ATTRIBUT_CONTENT));
+        if (results.getCount() != 0) {
 
-            Item item = new Item(itemId, itemName, itemType, itemParentId);
-            if (itemType == ItemType.Note){
-                Note note = (Note) item;
-                note.setContent(itemContent);
-                allItems.add(note);
-            } else {
-                allItems.add(item);
+            while (!results.isLast()) {
+                results.moveToNext();
+                itemId = results.getInt(results.getColumnIndex(ATTRIBUT_ID));
+                itemName = results.getString(results.getColumnIndex(ATTRIBUT_NAME));
+                itemParentId = results.getInt(results.getColumnIndex(ATTRIBUT_PARENTID));
+                itemType = ItemType.valueOf(results.getString(results.getColumnIndex(ATTRIBUT_TYPE)));
+                itemContent = results.getString(results.getColumnIndex(ATTRIBUT_CONTENT));
+
+
+                if (itemType == ItemType.Note) {
+                    Note note = new Note(itemId, itemName, itemParentId, itemContent);
+                    allItems.add(note);
+                } else {
+                    Item item = new Item(itemId, itemName, itemType, itemParentId);
+                    allItems.add(item);
+                }
+
             }
-
-            results.moveToNext();
         }
 
         results.close();

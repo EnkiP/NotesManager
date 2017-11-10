@@ -26,8 +26,9 @@ public class ItemsAdapter extends ArrayAdapter {
     }
 
 
+    @NonNull
     @Override
-    public View getView(@NonNull int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
         View row = convertView;
         ItemViewHolder holder;
 
@@ -49,7 +50,7 @@ public class ItemsAdapter extends ArrayAdapter {
         }
 
         Item item = items.get(position);
-        holder.id.setText(item.getId());
+        holder.id.setText( Integer.toString(item.getId()));
         holder.name.setText(item.getName());
         holder.type.setText(item.getType().toString());
 

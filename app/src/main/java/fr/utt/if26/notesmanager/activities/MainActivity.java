@@ -2,11 +2,14 @@ package fr.utt.if26.notesmanager.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,22 +20,25 @@ import fr.utt.if26.notesmanager.ItemsAdapter;
 import fr.utt.if26.notesmanager.NotesPersistance;
 import fr.utt.if26.notesmanager.R;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
 
-        ListView listeItems = (ListView) findViewById(R.id.listeItems);
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        ListView listeItems = (ListView) findViewById(R.id.itemsListView);
 
         NotesPersistance db = new NotesPersistance(this, null);
         ArrayList<Item> items = db.getAllItems();
 
-        ItemsAdapter adapteur = new ItemsAdapter (this, R.layout.listview_item, items);
+        ItemsAdapter adapteur = new ItemsAdapter(this, R.layout.listview_item, items);
         listeItems.setAdapter(adapteur);
-
-
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,5 +74,8 @@ public class MainActivity extends Activity {
         CharSequence text = "Ajout d'une note...";
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
+
+        Intent intent = new Intent(this, NewNoteActivity.class);
+        startActivity(intent);
     }
 }
