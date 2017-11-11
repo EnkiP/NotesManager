@@ -121,4 +121,49 @@ public class NotesPersistance extends SQLiteOpenHelper {
         return allItems;
     }
 
+    /**
+     * Renvoie tous les items contenu dans le folder parent (dossiers et notes)
+     * @param idParent
+     * @return ArrayList d'objets Item
+     */
+    public ArrayList<Item> getFolderContent(int idParent){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Item> folderItems = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_ITEMS + " WHERE " + ATTRIBUT_PARENTID + " = "+idParent;
+
+        Cursor results = db.rawQuery(query, null);
+
+        int itemId;
+        String itemName;
+        int itemParentId;
+        ItemType itemType;
+        String itemContent;
+
+        if (results.getCount() != 0) {
+
+            while (!results.isLast()) {
+                results.moveToNext();
+                itemId = results.getInt(results.getColumnIndex(ATTRIBUT_ID));
+                itemName = results.getString(results.getColumnIndex(ATTRIBUT_NAME));
+                itemParentId = results.getInt(results.getColumnIndex(ATTRIBUT_PARENTID));
+                itemType = ItemType.valueOf(results.getString(results.getColumnIndex(ATTRIBUT_TYPE)));
+                itemContent = results.getString(results.getColumnIndex(ATTRIBUT_CONTENT));
+
+
+                if (itemType == ItemType.Note) {
+                    Note note = new Note(itemId, itemName, itemParentId, itemContent);
+                    folderItems.add(note);
+                } else {
+                    Item item = new Item(itemId, itemName, itemType, itemParentId);
+                    folderItems.add(item);
+                }
+
+            }
+        }
+
+        results.close();
+
+        return folderItems;
+    }
+
 }

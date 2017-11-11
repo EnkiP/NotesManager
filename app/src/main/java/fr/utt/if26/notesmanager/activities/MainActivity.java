@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +28,26 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //Création des boutons pour ajouter des notes ou des folders.
+        Button addNoteButton = (Button) findViewById(R.id.addNoteButton);
+        Button addFolderButton = (Button) findViewById(R.id.addFolderButton);
+
+        addNoteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addNote();
+            }
+        });
+
+        addFolderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        //------------------------------------------------------------
     }
 
     @Override
@@ -35,7 +57,7 @@ public class MainActivity extends AppCompatActivity  {
         ListView listeItems = (ListView) findViewById(R.id.itemsListView);
 
         NotesPersistance db = new NotesPersistance(this, null);
-        ArrayList<Item> items = db.getAllItems();
+        ArrayList<Item> items = db.getFolderContent(0);
 
         ItemsAdapter adapteur = new ItemsAdapter(this, R.layout.listview_item, items);
         listeItems.setAdapter(adapteur);
@@ -68,6 +90,10 @@ public class MainActivity extends AppCompatActivity  {
         toast.show();
     }
 
+
+    /**
+     * Crée un nouvel intent NewNoteActivity puis ouvre cette activité.
+     */
     private void addNote(){
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
