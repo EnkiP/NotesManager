@@ -10,6 +10,6 @@ public class NewFolderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_folder);
+        setContentView(R.layout.popup_new_folder);
     }
 }

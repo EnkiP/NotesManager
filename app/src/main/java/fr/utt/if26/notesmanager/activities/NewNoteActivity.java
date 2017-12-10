@@ -31,6 +31,8 @@ public class NewNoteActivity extends AppCompatActivity {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int folderId = getIntent().getIntExtra("folderId", 0);
+
                 EditText noteNameET = (EditText) findViewById(R.id.noteNameEditText);
                 EditText noteContentET = (EditText) findViewById(R.id.contentEditText);
 
@@ -38,7 +40,7 @@ public class NewNoteActivity extends AppCompatActivity {
                 String noteContent = noteContentET.getText().toString();
 
                 NotesPersistance db = new NotesPersistance(getBaseContext(), null);
-                db.addNote(0, noteName, noteContent);
+                db.addNote(folderId, noteName, noteContent);
                 finish();
             }
         });

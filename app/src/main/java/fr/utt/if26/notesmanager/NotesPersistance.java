@@ -63,6 +63,7 @@ public class NotesPersistance extends SQLiteOpenHelper {
     /**
      * Ajoute une note dans la base de données
      * @param parentId Id du dossier parent (0 si le nouveau dossier est à la racine)
+     * @param name nom de la note
      * @param content contenu de la note
      */
     public void addNote(int parentId, String name, String content){
@@ -79,9 +80,9 @@ public class NotesPersistance extends SQLiteOpenHelper {
 
     /**
      * Renvoie tous les items de la base de données (dossiers et notes)
-     * @return ArrayList d'objets Item
+     * @return Array d'objets Item
      */
-    public ArrayList<Item> getAllItems(){
+    public Item[] getAllItems(){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Item> allItems = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_ITEMS;
@@ -118,15 +119,15 @@ public class NotesPersistance extends SQLiteOpenHelper {
 
         results.close();
 
-        return allItems;
+        return allItems.toArray(new Item[allItems.size()]);
     }
 
     /**
      * Renvoie tous les items contenu dans le folder parent (dossiers et notes)
      * @param idParent
-     * @return ArrayList d'objets Item
+     * @return Array d'objets Item
      */
-    public ArrayList<Item> getFolderContent(int idParent){
+    public Item[] getFolderContent(int idParent){
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Item> folderItems = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_ITEMS + " WHERE " + ATTRIBUT_PARENTID + " = "+idParent;
@@ -163,7 +164,21 @@ public class NotesPersistance extends SQLiteOpenHelper {
 
         results.close();
 
-        return folderItems;
+        return folderItems.toArray(new Item[folderItems.size()]);
+    }
+
+
+    public void deleteItem(int itemToDelete, boolean isFolder){
+        SQLiteDatabase db = getWritableDatabase();
+
+        if (isFolder) {
+            Item[] items = getFolderContent(itemToDelete);
+            for (Item item : items){
+                deleteItem(item.getId(), item.getType() == ItemType.Folder);
+            }
+        }
+
+        db.delete(TABLE_ITEMS, ATTRIBUT_ID + "=" + itemToDelete, null);
     }
 
 }

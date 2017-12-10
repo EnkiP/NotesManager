@@ -16,9 +16,9 @@ public class ItemsAdapter extends ArrayAdapter {
 
     private Context context;
     private int layoutResourceId;
-    private ArrayList<Item> items = null;
+    private Item[] items = null;
 
-    public ItemsAdapter(Context context, int resource, ArrayList<Item> items) {
+    public ItemsAdapter(Context context, int resource, Item[] items) {
         super(context, resource, items);
         this.layoutResourceId = resource;
         this.context = context;
@@ -49,7 +49,7 @@ public class ItemsAdapter extends ArrayAdapter {
             holder = (ItemViewHolder)row.getTag();
         }
 
-        Item item = items.get(position);
+        Item item = items[position];
         holder.id.setText( Integer.toString(item.getId()));
         holder.name.setText(item.getName());
         holder.type.setText(item.getType().toString());

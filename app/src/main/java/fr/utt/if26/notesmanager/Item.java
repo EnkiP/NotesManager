@@ -1,10 +1,5 @@
 package fr.utt.if26.notesmanager;
 
-enum ItemType{
-    Folder,
-    Note
-}
-
 public class Item{
 
     private int id;

@@ -9,55 +9,80 @@
 
     <LinearLayout
         android:id="@+id/LinearLayout1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="46dp"
-            android:layout_height="18dp"
-            android:text="test"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="180dp" />
-
-        <ListView
-            android:id="@+id/itemsListView"
+            android:id="@+id/navigation"
             android:layout_width="match_parent"
-            android:layout_height="429dp" >
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="root > folder1 > folder1.3" />
 
-        </ListView>
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ListView
+                android:id="@+id/itemsListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#90909090" />
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
+            style="?android:buttonBarStyle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/addNoteButton"
+                style="?android:buttonBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="New note" />
+                android:text="@string/addNote" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#90909090" />
 
             <Button
                 android:id="@+id/addFolderButton"
+                style="?android:buttonBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="New folder" />
+                android:text="@string/addFolder" />
         </LinearLayout>
 
     </LinearLayout>
