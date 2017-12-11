@@ -2,15 +2,15 @@ package fr.utt.if26.notesmanager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.LayoutRes;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class ItemsAdapter extends ArrayAdapter {
 
@@ -38,9 +38,9 @@ public class ItemsAdapter extends ArrayAdapter {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ItemViewHolder();
-            holder.id = (TextView)row.findViewById(R.id.itemId);
+            holder.icon = (ImageView)row.findViewById(R.id.itemIcon);
             holder.name = (TextView)row.findViewById(R.id.itemName);
-            holder.type = (TextView)row.findViewById(R.id.itemType);
+            holder.preview = (TextView)row.findViewById(R.id.itemPreview);
 
             row.setTag(holder);
         }
@@ -50,17 +50,26 @@ public class ItemsAdapter extends ArrayAdapter {
         }
 
         Item item = items[position];
-        holder.id.setText( Integer.toString(item.getId()));
         holder.name.setText(item.getName());
-        holder.type.setText(item.getType().toString());
+        switch (item.getType()){
+            case Folder:
+                holder.icon.setImageResource(R.drawable.folder_icon);
+                holder.preview.setHeight(0);
+                break;
+            case Note:
+                holder.icon.setImageResource(R.drawable.note_icon);
+                String noteContent = ((Note)item).getContent();
+                holder.preview.setText(noteContent);
+                break;
+        }
 
         return row;
     }
 
     private static class ItemViewHolder
     {
-        TextView id;
         TextView name;
-        TextView type;
+        TextView preview;
+        ImageView icon;
     }
 }

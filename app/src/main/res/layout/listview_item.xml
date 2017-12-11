@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayoutListItem"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,30 +12,30 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/itemId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/itemIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/folder_icon" />
 
         <TextView
             android:id="@+id/itemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
             android:layout_weight="1"
             android:text="Name"
-            android:textSize="18sp"
-            android:layout_marginStart="15dp"
-            />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
-        android:id="@+id/itemType"
+        android:id="@+id/itemPreview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         android:layout_marginStart="15dp"
-        />
+        android:text="TextView"
+        android:ellipsize="end"
+        android:maxLines="1"/>
 </LinearLayout>

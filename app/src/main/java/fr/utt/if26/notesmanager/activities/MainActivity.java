@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity  {
     private String[] navigationFolders = {"root"};
     private ListView listeItems = null;
     NotesPersistance db = null;
+    String navigationText = "";
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity  {
 
         //Mise à jour du textview de navigation
         TextView navigation = (TextView) findViewById(R.id.navigation);
-        String navigationText = "";
         if (navigationFolders != null) {
             for (String folder : navigationFolders) {
                 navigationText = navigationText + " > " + folder;
@@ -322,15 +322,22 @@ public class MainActivity extends AppCompatActivity  {
 
 
     private void displayItem(Item item){
+        Intent intent;
         switch (item.getType()) {
             case Folder:
-                Intent intent = new Intent(this, MainActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 intent.putExtra("folderId", item.getId());
                 intent.putExtra("navigation", navigationFolders);
                 intent.putExtra("folderName", item.getName());
                 startActivity(intent);
                 break;
             case Note:
+                intent = new Intent(this, ReadNoteActivity.class);
+                intent.putExtra("noteId", item.getId());
+                intent.putExtra("noteName", item.getName());
+                intent.putExtra("noteContent", ((fr.utt.if26.notesmanager.Note) item).getContent());
+                intent.putExtra("navigation", navigationText);
+                startActivity(intent);
                 break;
         }
     }
@@ -368,5 +375,4 @@ public class MainActivity extends AppCompatActivity  {
         //affichage du popup
         alertDialog.show();
     }
-
 }
