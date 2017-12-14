@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fr.utt.if26.notesmanager.activities.ReadNoteActivity">
+    tools:context="fr.utt.if26.notesmanager.activities.EditNoteActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,28 +25,84 @@
             android:layout_height="wrap_content"
             android:text=" > root > folder1" />
 
-        <TextView
-            android:id="@+id/noteName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:text="Name"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/noteContent"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/noteName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:text="Name"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="(Edit mode)" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/noteContent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:scrollbars="vertical"
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut faucibus mauris. Donec lorem dui, interdum vel egestas id, cursus et arcu. Duis luctus nulla orci, at euismod metus dignissim et. Nullam suscipit posuere enim eu lacinia. Fusce eu est erat. Proin consequat massa at enim iaculis, sit amet egestas felis tincidunt. Nunc hendrerit orci sed luctus vulputate. Quisque eu faucibus enim. Ut quis dolor eleifend, sollicitudin lacus eget, efficitur mauris.  Praesent ac porta ligula. Phasellus nec libero placerat, consectetur lectus quis, euismod nisl. Sed interdum quam eget augue pellentesque lobortis. Cras vehicula vel erat eget egestas. Proin pharetra lectus et orci blandit laoreet. Aliquam auctor ultrices dolor, in vestibulum orci auctor sit amet. Sed lobortis egestas enim, at porta mauris tincidunt eu. Vivamus bibendum mi quis leo ullamcorper, nec pretium massa scelerisque. In ultricies sapien in tempor finibus. Quisque risus nunc, ultricies eget luctus sit amet, commodo non justo.  Nam ullamcorper aliquam turpis in maximus. Pellentesque dictum rutrum lacus, nec elementum tellus dictum eget. Aliquam est quam, fermentum tincidunt nunc ut, aliquet placerat purus. Duis fermentum lacus aliquet tincidunt suscipit. Morbi lacinia, ligula eget cursus gravida, felis sem scelerisque nunc, quis venenatis purus orci quis est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla facilisi. Aliquam lobortis suscipit dignissim. Duis ac mattis risus, in hendrerit dui. Nullam varius porta nisi in ullamcorper. Phasellus nisi sem, pellentesque ut libero tempor, convallis consectetur eros. Nulla et rutrum purus, ut fringilla magna. Donec lobortis justo sed arcu malesuada, ac varius metus blandit. Vestibulum sed dui rutrum, iaculis elit quis, aliquam purus. Cras cursus tortor in neque pharetra suscipit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.  Fusce ut venenatis lorem. Proin sed volutpat quam, quis vestibulum quam. Phasellus a lacinia nulla. Cras sollicitudin lectus eget leo cursus, et feugiat metus feugiat. Aliquam facilisis nisl tincidunt arcu pellentesque efficitur. Cras laoreet metus a augue maximus dictum. Integer eu aliquet diam. Nulla id orci id nulla fringilla egestas eget quis est. Suspendisse sit amet auctor leo. Etiam aliquet maximus neque eget auctor. Nunc fringilla, dui vitae sodales tempus, ligula ligula accumsan velit, non lacinia leo velit a ex.  Morbi vitae rutrum justo, at consequat quam. Suspendisse bibendum felis eget nisi lacinia, eu facilisis purus varius. Etiam auctor nisl et sem maximus ullamcorper. Proin pharetra lorem elementum metus scelerisque facilisis. Ut scelerisque leo tortor, sed sodales ex posuere et. Fusce massa arcu, euismod et est in, tempus suscipit ex. Duis at tempor purus. Nam non porttitor est. Nunc porttitor, massa a iaculis scelerisque, sapien massa bibendum leo, vel porttitor massa sem a metus. Ut sit amet tristique ex. Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras dui lorem, pulvinar a auctor eget, egestas vitae dolor. Nunc pulvinar magna eget diam mattis malesuada sed varius eros. Nullam blandit volutpat nisl, non varius augue commodo et."
-            android:textAlignment="viewStart" />
+            android:gravity="top"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#90909090" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            style="?android:buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/cancelButton"
+                style="?android:buttonBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#90909090" />
+
+            <Button
+                android:id="@+id/confirmButton"
+                style="?android:buttonBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/confirm" />
+        </LinearLayout>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

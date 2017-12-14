@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -229,7 +228,7 @@ public class MainActivity extends AppCompatActivity  {
                         displayItem(itemInList);
                         break;
                     case R.id.action_rename:
-                        Toast.makeText(MainActivity.this,"renaming " + itemInList.getName(),Toast.LENGTH_SHORT).show();
+                        renameItem(itemInList);
                         break;
                     case R.id.action_delete:
                         deleteItem(itemInList);
@@ -334,8 +333,8 @@ public class MainActivity extends AppCompatActivity  {
             case Note:
                 intent = new Intent(this, ReadNoteActivity.class);
                 intent.putExtra("noteId", item.getId());
-                intent.putExtra("noteName", item.getName());
-                intent.putExtra("noteContent", ((fr.utt.if26.notesmanager.Note) item).getContent());
+                //intent.putExtra("noteName", item.getName());
+                //intent.putExtra("noteContent", ((fr.utt.if26.notesmanager.Note) item).getContent());
                 intent.putExtra("navigation", navigationText);
                 startActivity(intent);
                 break;
@@ -343,8 +342,50 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    private void renameItem() {
+    @SuppressLint("SetTextI18n")
+    private void renameItem(final Item item) {
+        //création de la popup qui demandera à l'utilisateur le nouveau nom de l'item
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        @SuppressLint("InflateParams")
+        final View view = inflater.inflate(R.layout.popup_rename_item,null);
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setCancelable(true);
 
+        final EditText newName = (EditText) view.findViewById(R.id.newName);
+        TextView renameItemTextView = (TextView) view.findViewById(R.id.renameItemTextView);
+        renameItemTextView.setText("Rename " + item.getName() + " in :");
+
+        switch (item.getType()){
+            case Note:
+                alertDialog.setTitle("Rename note");
+                break;
+            case Folder:
+                alertDialog.setTitle("Rename folder");
+                break;
+        }
+
+        //renommage de l'item
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newNameString = newName.getText().toString();
+                db.renameItem(item.getId(), newNameString);
+                onResume();
+            }
+        });
+
+        //annulation
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        //affichage du popup
+        alertDialog.setView(view);
+        alertDialog.show();
     }
 
 

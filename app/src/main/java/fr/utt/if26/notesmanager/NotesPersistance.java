@@ -181,4 +181,56 @@ public class NotesPersistance extends SQLiteOpenHelper {
         db.delete(TABLE_ITEMS, ATTRIBUT_ID + "=" + itemToDelete, null);
     }
 
+    public void renameItem(int itemId, String newName){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues newItem = new ContentValues();
+        newItem.put(ATTRIBUT_NAME, newName);
+
+        db.update(TABLE_ITEMS, newItem, ATTRIBUT_ID + "=" + Integer.toString(itemId), null);
+    }
+
+    public void editItem(int itemId, String newContent){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues newItem = new ContentValues();
+        newItem.put(ATTRIBUT_CONTENT, newContent);
+
+        db.update(TABLE_ITEMS, newItem, ATTRIBUT_ID + "=" + Integer.toString(itemId), null);
+    }
+
+
+    public Item getItem(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_ITEMS + " WHERE " + ATTRIBUT_ID + " = "+ id;
+
+        Cursor results = db.rawQuery(query, null);
+
+        Item item = null;
+        int itemId;
+        String itemName;
+        int itemParentId;
+        ItemType itemType;
+        String itemContent;
+
+        if (results.getCount() != 0) {
+
+            results.moveToFirst();
+            itemId = results.getInt(results.getColumnIndex(ATTRIBUT_ID));
+            itemName = results.getString(results.getColumnIndex(ATTRIBUT_NAME));
+            itemParentId = results.getInt(results.getColumnIndex(ATTRIBUT_PARENTID));
+            itemType = ItemType.valueOf(results.getString(results.getColumnIndex(ATTRIBUT_TYPE)));
+            itemContent = results.getString(results.getColumnIndex(ATTRIBUT_CONTENT));
+
+            if (itemType == ItemType.Note) {
+                item = new Note(itemId, itemName, itemParentId, itemContent);
+            } else {
+                item = new Item(itemId, itemName, itemType, itemParentId);
+            }
+        }
+
+        results.close();
+
+        return item;
+    }
 }
